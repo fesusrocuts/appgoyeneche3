@@ -10,5 +10,11 @@ tar cfz appgoyeneche3.tar.gz appgoyeneche3/*
 sleep 1
 sudo docker build -t app-cartera-01 .
 sleep 5
+## tracking from container, require launch manual app.py
+#sudo docker run --rm -h localhost -dit --name cartera -p 5000:5000 app-cartera-01 bash
+
+#executed without tracking, is execute when up container
 sudo docker run --rm -h localhost -dit --name cartera -p 5000:5000 app-cartera-01 python app.py
+
+#run python without access ip 
 #sudo docker run -dit cartera bash
