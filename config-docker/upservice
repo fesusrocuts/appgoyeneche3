@@ -2,6 +2,9 @@
 ##cd appgoyeneche1
 ##ll | awk -e '$9 ~ /[a-zA-Z]/ {print $9}' | awk -e '$0 !~ /.git/ {print "cp -rf "$0" ../appgoyeneche3"}'  | sh
 
+sudo docker rm -f cartera
+sudo docker rmi -f app-cartera-01
+
 rm -rf appgoyeneche3.tar.gz
 tar cfz appgoyeneche3.tar.gz appgoyeneche3/*
 sleep 1

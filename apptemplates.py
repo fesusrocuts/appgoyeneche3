@@ -21,8 +21,22 @@ def form_upfile():
     if request.method == 'POST':
         f = request.files['file']
         f.save("static/files/{}".format(secure_filename("current.xls")))
-        return 'file uploaded successfully'
+        return 'file debtors uploaded successfully'
     return render_template("file.html", data={})
+
+@app.route('/app1/form/debt_portfolio/file2', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def form_upfile2():
+    #_request = request.get_json(force=True)
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save("static/files/{}".format(secure_filename("clients.xls")))
+        try:
+            os.remove("static/files/clients.json")
+        except Exception as e:
+            pass
+        return 'file clients uploaded successfully'
+    return render_template("file2.html", data={})
+
 
 @app.route('/app1/form/debt_portfolio/conn', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def form_conn():
@@ -152,6 +166,7 @@ def sendQueue(q):
 
 @app.route('/app1/form/debt_portfolio/send', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def form_notifications():
+    print("form_notifications >>>>>>>>>>>>>>>>")
     try:
         _request = request.get_json(force=True)
         data["cache_id"] = _request["key"]
@@ -159,12 +174,14 @@ def form_notifications():
         data["cache_id"] = uuid.uuid4()
 
     try:
+        readFileXlsClients(getFileClients())
         readFileXls(getFile())
         queue = load_from_json_file("static/files/queue.json")
         #updateStatusQueue()
     except Exception as e:
+        print(e)
         return render_template("sendQueueLog.html", data={"msgerr":"File not found"})
-
+    
     try:
         os.remove("static/files/queue.json")
     except Exception as e:

@@ -148,9 +148,28 @@ function settingConn(e){
 function upload(){
   console.log("fn upload")
   var formData = new FormData();
-  formData.append('file', $('input[type=file]')[0].files[0]);
+  formData.append('file', $('input[name=file]')[0].files[0]);
   $.ajax({
      url: '/app1/form/debt_portfolio/file',
+     type: 'POST',
+     data: formData,
+     async: false,
+     cache: false,
+     contentType: false,
+     enctype: 'multipart/form-data',
+     processData: false,
+     success: function (response) {
+       $(".setting").html(response);
+     }
+  });
+  return false;
+}
+function upload2(){
+  console.log("fn upload2")
+  var formData = new FormData();
+  formData.append('file', $('input[name=file2]')[0].files[0]);
+  $.ajax({
+     url: '/app1/form/debt_portfolio/file2',
      type: 'POST',
      data: formData,
      async: false,
@@ -170,6 +189,7 @@ if (typeof jQuery === 'function') {
     $(".btn_step1").bind("click",createprocess);
     $(".btn_save").bind("click",saveForm);
     $(".upfile").bind("click", upload)
+    $(".upfile2").bind("click", upload2)
     //$(".btn_step1_test").bind("click",settingConn);
   })
 }

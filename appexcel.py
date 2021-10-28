@@ -21,6 +21,12 @@ def getFile(filename = 'current.xls', path = 'static/files/'):
     if os.path.exists(file) is False:
         raise NameError('FileNotFoundError')
     return file;
+def getFileClients(filename = 'clients.xls', path = 'static/files/'):
+    # Give the location of the file, is relative
+    file = '{}{}'.format(path,filename)
+    if os.path.exists(file) is False:
+        raise NameError('FileNotFoundError')
+    return file;
 
 def updateStatusFile(file, path = 'static/files/old/'):
     if os.path.exists(file):
@@ -101,6 +107,37 @@ sheet = book.sheet_by_index(0)
 # For row 0 and column 0
 sheet.cell_value(0, 0)
 """
+def readFileXlsClients(file):
+    try:
+        book = xlrd.open_workbook(file)
+        sheet = book.sheet_by_index(0)
+        y = 5
+        i = 0
+        pattern="@"
+        cd={}
+        while(True):
+            row = sheet.row_values(y)
+            find1 = len(row[9])
+            find2 = row[8].find(pattern)
+            if (find2 > -1 and find1 > 0):
+                #nit without activity
+                nit_wa=row[3][:row[3].find("-")]
+                #nit full
+                nit=str.strip(row[3])
+                v=str.strip(row[8]).replace(" ","")
+                d={nit:v}
+                d2={nit_wa:v}
+                cd.update(d)
+                cd.update(d2)
+            y += 1
+            i += 1
+        #os.remove("static/files/clients.json")
+        save_to_json_file(cd,"static/files/clients.json")
+    except Exception as e:
+        #os.remove("static/files/clients.json")
+        save_to_json_file(cd,"static/files/clients.json")
+        pass
+
 def readFileXls(file):
     try:
         book = xlrd.open_workbook(file)
@@ -146,35 +183,35 @@ def readFileXls(file):
                 "POSColAlpha":"F",
                 "POSCol":5,
                 "POSRow":5,
-                "NAME":"1-30 DIAS"
+                "NAME":"1-5 DIAS"
             },
             {
                 "REF":"CADUCITY2",
                 "POSColAlpha":"G",
                 "POSCol":6,
                 "POSRow":5,
-                "NAME":"31-60 DIAS"
+                "NAME":"6-10 DIAS"
             },
             {
                 "REF":"CADUCITY3",
                 "POSColAlpha":"H",
                 "POSCol":7,
                 "POSRow":5,
-                "NAME":"61-90 DIAS"
+                "NAME":"11-15 DIAS"
             },
             {
                 "REF":"CADUCITY4",
                 "POSColAlpha":"I",
                 "POSCol":8,
                 "POSRow":5,
-                "NAME":"91-120 DIAS"
+                "NAME":"16-20 DIAS"
             },
             {
                 "REF":"CADUCITY5",
                 "POSColAlpha":"J",
                 "POSCol":9,
                 "POSRow":5,
-                "NAME":"+ DE 120 DIAS"
+                "NAME":"+ 21 DIAS"
             },
             {
                 "REF":"TOTAL",
@@ -202,11 +239,18 @@ def readFileXls(file):
         print(e)
 
 def findClients(setting, table_caducity, sheet, x = 0, y = 0, queue = []):
+    print("findClients >>>> 01 stop if exists 1315-20-005")
+    stop = findPositionFor(sheet, "1315-20-005", x, y)
+    if stop is not None:
+        print("---- stop for match 1315-20-005 ----")
+
+    _client = load_from_json_file("static/files/clients.json")
+
     print("findClients >>>> 205")
     y = findPositionFor(sheet, "NIT", x, y)
     print("findClients >>>> 207")
     # queue = {}
-    if y is None:
+    if y is None and stop is None:
         # clean to queue file before save the last data
         try:
             #if len(queue) > 0:
@@ -224,13 +268,15 @@ def findClients(setting, table_caducity, sheet, x = 0, y = 0, queue = []):
             "status": "",
             "notification": {}
         }
-        y2 = findPositionFor(sheet, "Total", 1, y)
+        #y2 = findPositionFor(sheet, "Total", 1, y)
+        y2 = findPositionFor(sheet, "TOTAL", 0, y)
+
         print("findClients >>>> 228")
-        client = actClient(sheet, y, y2)
+        client = actClient(_client, sheet, y, y2)
         print("findClients >>>> 230")
         queue1.update({"client":client})
         print("---- client ----")
-        print("office_contact >>>>>")
+        print("client >>>>>")
         print(client)
         if client is None:
             pass
@@ -283,7 +329,10 @@ def findClients(setting, table_caducity, sheet, x = 0, y = 0, queue = []):
                     html2 = ""
                     tmprec = 0
                     for i in range(len(values)):
-                        tmpvar = len(str(values[i][4]))
+                        #old version
+                        #tmpvar = len(str(values[i][4]))
+                        #new version
+                        tmpvar = 0 if int(values[i][4])==0 else -1
                         if tmpvar == 0:
                             tmprec +=1;
                             html2 += "<TR style=\"{}\">".format(csstr[i%2])
@@ -291,13 +340,22 @@ def findClients(setting, table_caducity, sheet, x = 0, y = 0, queue = []):
                                 html2 += "<TD>{}</TD>".format(values[i][i2])
                             html2 += "</TR>"
 
+                    print("*******************************************")
+                    print("values")
+                    print(values)
+                    print(tmprec)
+                    print("*******************************************")
+                    
                     if len(html2) == 0:
                         html = ""
                         table = ""
                         body = ""
 
                     # if exist at least one record the email it sends
-                    if tmprec == len(values):
+                    #old version
+                    #if tmprec == len(values):
+                    #new version
+                    if tmprec == -1 and len(values)>0:
                         onsendmail = False
                     else:
                         table += html2
@@ -329,7 +387,6 @@ def findClients(setting, table_caducity, sheet, x = 0, y = 0, queue = []):
                         "message":html
                     }
                     queue1.update({"notification":notification})
-                    #sendmailhtml("contabilidad@comercializadoragyl.com", setting.get("__toEmail"), "cc: {}".format(currmsg.get("subject")), 'Hi, The next message you see correctly with html format',html)
 
             uid = str(uuid.uuid4())
             queue1.update({"status":status})
@@ -348,6 +405,8 @@ def findPositionFor(sheet, pattern = "NIT", x = 0, y = 0):
     try:
         while(True):
             row = sheet.row_values(y)
+            print("{}{}".format("check pattern:", pattern))
+            print(row)
             find2 = row[x].find(pattern)
             if find2 > -1:
                 return y
@@ -357,10 +416,31 @@ def findPositionFor(sheet, pattern = "NIT", x = 0, y = 0):
     except Exception as e:
         pass
 
-def actClient(sheet, y = 0, y2 = 0):
+def actClient(_client, sheet, y = 0, y2 = 0):
     try:
         row0 = sheet.row_values(y)
         row1 = sheet.row_values(y+1)
+        ###############################################
+        #row1[7]="CONTACTO: {} {}".format("Contacto", _client[row0[0].split()[-1]])
+        #row1[7]="CONTACTO: change frocuts1982@gmail.com {}".format(row0[0])
+        try:
+            #print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            #print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            _filter=row0[0].split()[-1]
+            _email=_client[_filter]
+            #print(_client)
+            #print(_filter)
+            #print(_client[_filter])
+            #print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+            #print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+            #quit()
+        except Exception as e:
+            _email=""
+            #pass
+
+        row1[7]="CONTACTO: Contact {}".format(_email)
+        ###############################################
+
         temp = []
         for i in range(y+2, y2-1):
             rowx = sheet.row_values(i)
