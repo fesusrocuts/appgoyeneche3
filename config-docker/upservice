@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+##cd appgoyeneche1
+##ll | awk -e '$9 ~ /[a-zA-Z]/ {print $9}' | awk -e '$0 !~ /.git/ {print "cp -rf "$0" ../appgoyeneche3"}'  | sh
+
+rm -rf appgoyeneche3.tar.gz
+tar cfz appgoyeneche3.tar.gz appgoyeneche3/*
+sleep 1
+sudo docker build -t app-cartera-01 .
+sleep 5
+sudo docker run --rm -h localhost -dit --name cartera -p 5000:5000 app-cartera-01 python app.py
+#sudo docker run -dit cartera bash
