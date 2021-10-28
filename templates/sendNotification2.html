@@ -1,0 +1,96 @@
+  <div class="container d-flex justify-content-center mx-auto">
+    <div class="row">
+      <div class="shadow-sm bg-info rounded p-3">
+        <h5 class="card-title">Send notifications</h5>
+        <p class="card-text d-none">Hooray, your client have been notified!</p>
+        <p class="card-text">Status: {{data.status}}</p>
+        <p class="card-text">{{data.message}}</p>
+        <div class="shadow-sm bg-info rounded p-3 finish">
+          <div class="lds-dual-ring"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<p></p>
+    <div class="form-group checkstatus mx-auto">
+      <div class="row border bg-primary">
+        <div class="col-md-3 border themed-grid-col">NIT</div>
+        <div class="col-md-3 border themed-grid-col">MAIL</div>
+        <div class="col-md-4 border themed-grid-col">STATUS</div>
+        <div class="col-md-2 border themed-grid-col">SENDMAIL</div>
+      </div>
+      {% for n in range(data.queue | length) %}
+        <div class="row border {{"bg-success" if n%2 == 0 else "bg-info" }} {{data.queue[n]}}">
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="container d-flex justify-content-center mx-auto">
+      <div class="row">
+        <div class="shadow-sm bg-info rounded p-3">
+          <div class="shadow-sm bg-info rounded p-3 finish">
+            <div class="lds-dual-ring"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+<script type="text/javascript">
+  let queue = {{ data.queue|safe}};
+  let queuec = 0
+  let queuem = queue.length
+  console.log("queuem > " + queuem)
+  function checkQueue(uri,node){
+    let _path = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+    $.ajax({
+      type: 'GET',
+      crossDomain: true,
+      datatype: 'jsonp',
+      url: _path + uri,
+      //data: JSON.stringify({
+        //  "key": _key
+      //}),
+      header: {
+          "Access-Control-Allow-Headers" : "X-PINGOTHER"
+      },
+      //contentType: 'application/json',
+      success: function (data) {
+          console.log(data);
+          let to = data.notification.to !== undefined ? data.notification.to : ""
+          portionHTML = '<div class="col-md-3 border themed-grid-col">'+data.client.name+'</div>'
+          portionHTML += '<div class="col-md-3 border themed-grid-col">'+to+'</div>'
+          portionHTML += '<div class="col-md-4 border themed-grid-col">'+data.status+'</div>'
+          if (data.sendmail){
+            portionHTML += '<div class="col-md-2 border themed-grid-col"><span class="oi oi-check" title="icon" aria-hidden="true"></span></div>'
+          }else{
+            portionHTML += '<div class="col-md-2 border themed-grid-col"><span class="oi oi-x" title="icon" aria-hidden="true"></span></div>'
+          }
+          node.html(portionHTML);
+          setSrcIframe()
+      }
+    });
+  }
+
+  function setSrcIframe(){
+    console.log("setSrcIframe")
+    let t = Date.now()
+    node = $(".checkstatus").get(0)
+    if (node !== undefined){
+      if (queue[queuec] !== undefined){
+        console.log("queuec > " + (queuec + 1))
+        console.log("." + queue[queuec])
+        node2 = $("." + queue[queuec])
+        if (node2 !== undefined){
+          let src = "/app1/form/debt_portfolio/sendQueue/"+queue[queuec]
+          checkQueue(src, node2)
+        }
+      }else{
+        console.log("End process")
+        node3 = $(".finish")
+        node3.html("<div class=\"row justify-content-center\">End process</div><br><button onclick=\"window.print();\">Print document</button>")
+      }
+    }
+    queuec++;
+  }
+ setSrcIframe()
+</script>

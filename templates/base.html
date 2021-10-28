@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}?{{data.cache_id}}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='open-iconic/font/css/open-iconic-bootstrap.css') }}?{{data.cache_id}}">
+
+  <!-- Customizable CSS -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}?{{data.cache_id}}">
+  <!-- Jquery JS -->
+  <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+  <!-- autoJS -->
+  <script src="{{ url_for('static', filename='js/autojs.js') }}?{{data.cache_id}}"></script>
+
+</head>
+<body class="text-center">
+{% block content%}
+{% endblock %}
+</body>
+</html>

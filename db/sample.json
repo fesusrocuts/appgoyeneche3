@@ -1,0 +1,25 @@
+{
+  "email": "",
+  "conn": { === it is work with collection into firebase
+    "url_login":"",
+    "user":"",
+    "pwd":"",
+    "method":"POST",
+    "Content-Type":"application/x-www-form-urlencoded"
+  },
+  "resource": [ === it is work with collection into firebase
+    "url_file":"",
+    "test_access":"False",
+    "method":"POST"
+  ],
+  "templates":[ === it is work with collection into firebase
+    {
+      "id":"auto",
+      "name":"",
+      "url_header":"",
+      "url_footer":"",
+      "Subject":"",
+      "body":""
+    }
+  ]
+}

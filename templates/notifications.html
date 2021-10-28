@@ -1,0 +1,38 @@
+<div class="container d-flex justify-content-center w-75 fixcw75">
+  <div class="row">
+    <div class="shadow-sm bg-info rounded p-3">
+      <h5 class="card-title">When you send your notifications</h5>
+
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-3">
+            <input type="text" class="form-control col" placeholder="Type a number" value="0">
+          </div>
+          <div class="col-3">
+            <select id="inputState" class="form-control col">
+              <option>Minutes</option>
+              <option>Hours</option>
+              <option>Days</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <select id="inputState" class="form-control col">
+              <option>Loading Templates...</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <select class="form-control col">
+              <option value="before">Type: Activate how long before</option>
+              <option value="after">Type: Activate how long after</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" uuid="{{data.cache_id}}" class="btn btn-primary btn_add">{{data.labels.btns.a}}</button>
+      <button type="button" uuid="{{data.cache_id}}" class="btn btn-primary btn_step1">{{data.labels.btns.c2}}</button>
+      <input type="hidden" class="act" value="{{data.forms.notifications}}">
+      <input type="hidden" class="next" value="{{data.forms.building}}">
+    </div>
+  </div>
+</div>

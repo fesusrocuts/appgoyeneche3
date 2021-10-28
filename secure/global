@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+current="$(pwd)/db.json"
+export GOOGLE_APPLICATION_CREDENTIALS=$current
+#echo "add enviroment to connect db, the next is file to read json data"
+#echo $GOOGLE_APPLICATION_CREDENTIALS

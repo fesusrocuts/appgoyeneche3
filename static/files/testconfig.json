@@ -1,0 +1,38 @@
+{
+  "attr": {
+    "action": "https://ijoomlademo.com/administrator/",
+    "method": "post"
+  },
+  "auth_status": "<Response [200]>",
+  "currEl": [
+    {
+      "name": "username",
+      "placeholder": "Username",
+      "value": "demo"
+    },
+    {
+      "name": "passwd",
+      "placeholder": "Password",
+      "value": "demo"
+    },
+    {
+      "name": "option",
+      "value": "com_login"
+    },
+    {
+      "name": "task",
+      "value": "login"
+    },
+    {
+      "name": "return",
+      "value": "aW5kZXgucGhw"
+    },
+    {
+      "name": "3ca74f7bf6373c414f33a78c5d92d2fd",
+      "value": "1"
+    }
+  ],
+  "download_status": "<Response [200]>",
+  "status": "OK",
+  "uuid": "fd72de17-2c83-47db-a31b-e74df92f2706"
+}

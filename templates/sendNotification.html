@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title%}{{data.labels.title}}{% endblock %}
+{% block content%}
+  <header>
+    <div class="text-center p-1">{{data.labels.msg_welcome}}</div>
+  </header>
+  <p></p>
+  <form class="{{data.cache_id}}">
+  <div class="cover-container d-flex h-100 mx-auto flex-column">
+    <div class="container d-flex justify-content-center w-75 fixcw75">
+      <div class="row">
+        <div class="shadow-sm bg-info rounded p-3">
+          <h5 class="card-title">Send notifications</h5>
+          <p class="card-text">You can send to all your clients one message to remember the due date the invoices.</p>
+          <h6 class="card-title">Recommendations</h6>
+          <p class="card-text text-justify"><ul class="text-justify">
+            <li>first step, choose the file (xls)</li>
+            <li>second step, pick the upload button and wait until see the file has been uploaded</li>
+            <li>third step, pick the send message button and wait until that fisish</li>
+            <li class="bg-danger">fourth step, pick the Print button and choose your printer (in some cases you choose save as PDF format), warning: if you cancel the action you only will have a copy of notified customers</li>
+          </ul></p>
+
+          <div class="form-group">
+            <input type="file" class="form-control-rrr {{data.cache_id}}" placeholder="Upload your file" name="file">
+            <button type="button" name="button" class="upfile">Upload file</button>
+          </div>
+          <div class="form-group setting">
+          </div>
+
+          <button type="button" uuid="{{data.cache_id}}" class="btn btn-primary btn_step1">{{data.labels.btns.sm}}</button>
+          <input type="hidden" class="act" value="{{data.forms.send}}">
+          <input type="hidden" class="next" value="{{data.forms.send}}">
+          <p><small>When you pick above button, is take for us that you accept all terms and conditions of service written and published in <a target="_blank" href="http://bit.ly/2DCNaSN">Terms and conditions of service</a></small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  <footer>
+    <p class="text-right p-3"><small><a target="_blank" href="{{data.labels.authorurl}}">{{data.labels.author}}</a></small></p>
+  </footer>
+{% endblock %}

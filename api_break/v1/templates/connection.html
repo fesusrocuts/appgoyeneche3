@@ -1,0 +1,14 @@
+<div class="col-auto">
+  <small>hash: {{formJson.uuid}}</small>
+  <small>status: {{formJson.status}}</small>
+  <small>connecting to: {{ formJson.toUrl }}</small>
+  <br>
+  <small>update the next information:</small>
+</div>
+{% for el in formJson.currEl %}
+  {% if el.type in ["text", "password"] %}
+<div class="form-group">
+  <input type="{{ el.type }}" name="{{ el.name }}" placeholder="{{ el.name }}" value="">
+</div>
+  {% endif %}
+{% endfor %}

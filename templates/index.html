@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title%}{{data.labels.title}}{% endblock %}
+{% block content%}
+  <header>
+    <div class="text-center p-1">{{data.labels.msg_welcome}}</div>
+  </header>
+  <p></p>
+  <form class="{{data.cache_id}}">
+  <div class="cover-container d-flex h-100 mx-auto flex-column">
+    <div class="container d-flex justify-content-center w-75 fixcw75">
+      <div class="row">
+        <div class="shadow-sm bg-info rounded p-3">
+          <h5 class="card-title">Create quickly a process</h5>
+          <p class="card-text">The assistant you guide to connect, access to resource and download the program</p>
+          <button type="button" uuid="{{data.cache_id}}" class="btn btn-primary btn_step1">{{data.labels.btns.c}}</button>
+          <input type="hidden" class="act" value="{{data.forms.conn}}">
+          <input type="hidden" class="next" value="{{data.forms.conn}}">
+          <p><small>When you pick above button, is take for us that you accept all terms and conditions of service written and published in <a target="_blank" href="http://bit.ly/2DCNaSN">Terms and conditions of service</a></small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  <footer>
+    <p class="text-right p-3"><small><a target="_blank" href="{{data.labels.authorurl}}">{{data.labels.author}}</a></small></p>
+  </footer>
+{% endblock %}

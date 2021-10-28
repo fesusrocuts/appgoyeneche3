@@ -1,0 +1,26 @@
+<div class="container d-flex justify-content-center w-75 fixcw75">
+  <div class="row">
+    <div class="shadow-sm bg-info rounded p-3">
+      <h5 class="card-title">Where does it connect</h5>
+      <p class="card-text">Is required that you complete all fields</p>
+
+      <div class="form-group">
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your email">
+        <p><small>This field is for send to you message about status of Service</small></p>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Login URL">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="User">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" placeholder="Password">
+      </div>
+
+      <button type="button" uuid="{{data.cache_id}}" class="btn btn-primary btn_step1">{{data.labels.btns.s}}</button>
+      <input type="hidden" class="act" value="{{data.forms.conn}}">
+      <input type="hidden" class="next" value="{{data.forms.downloadfile}}">
+    </div>
+  </div>
+</div>
